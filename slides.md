@@ -249,7 +249,7 @@ using Components = ComponentDescriptor<FEFunctions, Variables, Extractors>;
 ```cpp
 using FEFunctions = FEFunctionDescriptor<Scalar<"u">>;
 using Variables = VariableDescriptor<FunctionND<"ZPhi", 32>, Scalar<"Y">>;
-using Extractors = ExtractorDescriptor< Scalar<"rhoPhi">, ...>;
+using Extractors = ExtractorDescriptor<Scalar<"rhoPhi">, ...>;
 using Components = ComponentDescriptor<FEFunctions, Variables, Extractors>;
 
 // create a index maps
@@ -482,7 +482,7 @@ void flux(std::array<Tensor<1, dim, NT>, 1> &flux,
 <v-click>
 <ImageFigure
   src="/pXstdSolution.png"
-  caption="Figure 1: Evoluation of an O(1) theory with SB."
+  caption="Figure 1: Evolution of an O(1) theory with SB."
   width="100%"
   height="240px"
   v-motion
