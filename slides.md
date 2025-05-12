@@ -180,12 +180,12 @@ $$\partial_t u(\rho) + \partial_\rho F(u,u',...) + s(u,u',...) = 0$$
 <v-click>
 
 - Vertex expansions:
-$$\partial_t v + \textrm{Flow}[v](v, u\vert_\textrm{EoM}, ...)$$
+$$\partial_t v + \textrm{Flow}[v](v, u\vert_\textrm{EoM}, ...) = 0$$ 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<mdi-arrow-right-bold/> $v$ is a vector of *variables*.
 </v-click>
 <v-click>
 
-- Extractors read out $e(u\vert_\textrm{EoM}, ...)$ and provide it to both sectors.
+- Extractors read out as functions $e(u\vert_\textrm{EoM}, ...)$ and provide $e(...)$ to both sectors.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<mdi-arrow-right-bold/> Extractors communicate from FE functions to variables.
 </v-click>
@@ -241,7 +241,7 @@ F_i[idxf("u")] = ...;
 
 ```cpp
 using FEFunctions = FEFunctionDescriptor<Scalar<"u">>;
-using Variables = VariableDescriptor<Scalar<"ZPhi", 32>>;
+using Variables = VariableDescriptor<FunctionND<"ZPhi", 32>, Scalar<"Y">>;
 using Extractors = ExtractorDescriptor< Scalar<"rhoPhi">, ...>;
 using Components = ComponentDescriptor<FEFunctions, Variables, Extractors>;
 ```
@@ -296,9 +296,9 @@ transition: fade-out
 
 <span class="text-4xl font-bold">O(N) model</span> 
 
+in LPA
 
 
-&nbsp;
 
 $$
 \Gamma[\phi] = \int_x \left(
@@ -306,14 +306,14 @@ $$
 \right),
 $$
 
-where $\rho = \phi^2/2$ and $\phi = (\sigma, \pi_1, \pi_2, \ldots)$.
+where $\rho = \frac{\phi^2}{2}$ and $\phi = (\sigma, \pi_1, \pi_2, \ldots)$.
 
 &nbsp;
 <v-click>
 Flow equation: 
 $$
-\partial_tV_\textrm{eff} = A_d \left[
-  \coth\Big(\frac{\sqrt{k^2 + u}}{2T}\Big) 
+\partial_tV_\textrm{eff} = A_d k^{d+2} \left[
+  (N-1)\coth\Big(\frac{\sqrt{k^2 + u}}{2T}\Big) 
   + \coth\Big(\frac{\sqrt{k^2 + u + 2\rho u'}}{2T}\Big) 
   \right],
 $$
@@ -330,7 +330,7 @@ transition: fade-out
 
 Note that
 $$
-\partial_t \Gamma^{(0)}[\Phi] = \textrm{Flow}(\Gamma^{(1)}[\Phi], \Gamma^{(2)}[\Phi])
+\partial_t \Gamma^{(0)}[\Phi] = \textrm{Flow}(\Gamma^{(2)}[\Phi])
 $$
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<mdi-arrow-right-bold/> $\Gamma^{0}[\Phi]$ is irrelevant for flow.
 
@@ -338,7 +338,7 @@ $$
 
 For a hydrodynamic formulation, take a derivative wrt. $\rho$ and define $u = V'$:
 $$
-\partial_t u(\rho, t) = A_d k^5 \partial_\rho\left[
+\partial_t u(\rho, t) = A_d k^{d+2} \partial_\rho\left[
   (N-1)\coth\Big(\frac{\sqrt{k^2 + u}}{2T}\Big) 
   + \coth\Big(\frac{\sqrt{k^2 + u + 2\rho u'}}{2T}\Big) 
   \right]
@@ -422,10 +422,10 @@ transition: slide-left
   
 # Hydrodynamics for the fRG
 
-Calculate the flow of $u(\rho)$ on an FE discretization:
+Calculate the flow of $u(\rho)$ on an FE discretization in $d=3$:
 
 $$
-\partial_t u(\rho, t) = A_d k^5 \partial_\rho\left[
+\partial_t u(\rho, t) = A_3 k^5 \partial_\rho\left[
   (N-1)\coth\Big(\frac{\sqrt{k^2 + u}}{2T}\Big) 
   + \coth\Big(\frac{\sqrt{k^2 + u + 2\rho u'}}{2T}\Big) 
   \right]
@@ -470,8 +470,8 @@ void flux(std::array<Tensor<1, dim, NT>, 1> &flux,
 
   const double A_3 = powr<-1>(6. * powr<2>(M_PI));
   flux[idxf("u")][0] = A_3 * powr<5>(k) * (
-    (N-1) * coth(sqrt(k2 + m2Pi)/(2*T)) 
-          + coth(sqrt(k2 + m2Sigma)/(2*T)));
+    (prm.N-1) * coth(sqrt(k2 + m2Pi)/(2*prm.T)) 
+          + coth(sqrt(k2 + m2Sigma)/(2*prm.T)));
 }
 ```
 ````
@@ -571,7 +571,7 @@ transition: slide-left
 
 ## Example:
 
-<v-switch at=6>
+<v-switch at=7>
 <template #1>
 
 Deriving the flow equations for a Gluon propagator:
