@@ -3,7 +3,7 @@
 theme: seriph
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
-background: ./figures/bckp.jpg
+background: ./public/bckp.jpg
 #https://cover.sli.dev
 # some information about your slides (markdown enabled)
 title: Introduction to DiFfRG
@@ -396,7 +396,7 @@ $$
 <div class="grid grid-cols-[50%_50%] gap-4">
 <div>
 <ImageFigure
-  src="./figures/Example_of_2D_mesh.png"
+  src="./public/Example_of_2D_mesh.png"
   caption="Figure 2: A 2D finite element geometry
   [wikipedia.org]."
   width="100%"
@@ -405,7 +405,7 @@ $$
 </div>
 <div>
 <ImageFigure
-  src="./figures/DG_geo_1d.png"
+  src="./public/DG_geo_1d.png"
   caption="Figure 2: A 1D finite element geometry."
   width="100%"
   height="240px"
@@ -481,7 +481,7 @@ void flux(std::array<Tensor<1, dim, NT>, 1> &flux,
 
 <v-click>
 <ImageFigure
-  src="./figures/pXstdSolution.png"
+  src="./public/pXstdSolution.png"
   caption="Figure 1: Evoluation of an O(1) theory with SB."
   width="100%"
   height="240px"
@@ -527,7 +527,7 @@ transition: fade-out
 - Load by using ``Get["DiFfRG`"]``
 
 <v-click>
-<img src="./figures/Get_math.png"/>
+<img src="./public/Get_math.png"/>
 </v-click>
 
 <style>
@@ -573,7 +573,7 @@ transition: slide-left
 <template #1>
 
 Deriving the flow equations for a Gluon propagator:
-<img src="./figures/Gluon_math.png"/>
+<img src="./public/Gluon_math.png"/>
 </template>
 <template #2>
 
@@ -632,7 +632,7 @@ img {
 ---
 layout: image-right
 transition: slide-left
-image: ./figures/ZA.png
+image: ./public/ZA.png
 backgroundSize: contain
 ---
 
