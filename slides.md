@@ -558,7 +558,9 @@ transition: slide-left
 
 3. Define *kernels* and *parameters* for C++ code
 
-4. Derive flow equations and use `MakeKernel[kernel, parameters, expression]` to generate an *integrator*.
+5. Derive flow equations and project using `TensorBases`.
+
+4. Use `MakeKernel[kernel, parameters, expression]` to generate an *integrator* class.
 
 5. Use `MakeFlowClass[name, kernels]` to generate a class that manages all integrators.
 </v-clicks>
@@ -579,6 +581,13 @@ Deriving the flow equations for a Gluon propagator:
 
 And calling them in the model:
 ```cpp {*}{maxHeight:'450px'}
+...
+
+mutable YangMillsFlowEquations flow_equations;
+
+mutable TexLinearInterpolator1D<double, Coordinates1D> dtZc, dtZA, ZA, Zc;
+mutable TexLinearInterpolator1D<double, Coordinates1D> ZA4, ZAcbc, ZA3;
+
 void dt_variables(auto &residual, const auto &data) const
 {
   const auto &variables = get<"variables">(data);
